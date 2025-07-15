@@ -1,47 +1,246 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #ffffff;
+}
+
 .App {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background: #0a0a0a;
 }
 
 .App-header {
-  background-color: #343a40;
-  padding: 20px;
-  color: white;
+  padding: 40px 20px;
   text-align: center;
-  margin-bottom: 20px;
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .App-header h1 {
-  margin: 0 0 10px 0;
-  font-size: 2rem;
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00d4ff, #5b73ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
 }
 
 .App-header p {
-  margin: 0;
-  opacity: 0.8;
+  color: #888;
+  font-size: 1.1rem;
+  font-weight: 400;
 }
 
 main {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 40px 20px;
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
+  background: #111111;
+  border-radius: 24px;
+  padding: 40px;
+  border: 1px solid #1a1a1a;
+}
+
+.upload-area {
+  border: 2px dashed #333;
+  border-radius: 20px;
+  padding: 80px 40px;
+  text-align: center;
+  cursor: pointer;
+  background: #0f0f0f;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.upload-area:hover::before {
+  left: 100%;
 }
 
 .upload-area:hover {
-  border-color: #007bff;
-  background-color: #f8f9fa;
+  border-color: #00d4ff;
+  background: #0a0a0a;
+  transform: translateY(-4px);
 }
 
-input, button {
+.upload-area h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.upload-area p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.controls-panel {
+  background: #0f0f0f;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #1a1a1a;
+}
+
+.controls-panel h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #fff;
+}
+
+.control-group {
+  margin-bottom: 24px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ccc;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-group input {
+  width: 100%;
+  padding: 16px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.control-group input:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.range-input {
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+  appearance: none;
+}
+
+.range-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #00d4ff, #5b73ff);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.position-inputs {
+  display: flex;
+  gap: 16px;
+}
+
+.position-inputs > div {
+  flex: 1;
+}
+
+button {
   font-family: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-button:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.generate-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #00d4ff, #5b73ff);
+  color: white;
+  font-size: 16px;
+  margin-top: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.generate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.download-btn, .reset-btn {
+  padding: 16px 32px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #00ff88, #00d4ff);
+  color: #000;
+}
+
+.reset-btn {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.canvas-container {
+  background: #0f0f0f;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid #1a1a1a;
+}
+
+.canvas-container canvas {
+  max-width: 100%;
+  max-height: 600px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.4;
+  transform: none !important;
+}
+
+input[type="color"] {
+  height: 60px !important;
+  border-radius: 12px;
+  cursor: pointer;
 }

@@ -21,13 +21,14 @@ class U2NetModel:
         """Load pre-trained U2Net model"""
         try:
             print("Loading U2Net model...")
-            self.model = torch.hub.load('xuebinqin/U-2-Net', 'u2net', pretrained=True)
+            # Use alternative U2Net implementation
+            self.model = torch.hub.load('midasklr/U2Net', 'u2net', pretrained=True)
             self.model.to(self.device)
             self.model.eval()
             print(f"U2Net model loaded on {self.device}")
         except Exception as e:
             print(f"Error loading U2Net model: {e}")
-            print("Falling back to traditional CV methods")
+            print("Using traditional CV fallback (GrabCut)")
             self.model = None
     
     def predict(self, image):

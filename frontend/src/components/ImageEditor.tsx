@@ -78,7 +78,7 @@ const ImageEditor: React.FC = () => {
   }, [resultImageUrl]);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '20px', padding: '20px' }}>
+    <div className="editor-grid">
       <div>
         {!imageData.original ? (
           <ImageUpload onImageSelect={handleImageSelect} isLoading={isLoading} />
@@ -90,34 +90,16 @@ const ImageEditor: React.FC = () => {
               resultImage={resultImageUrl}
             />
             {resultImageUrl && (
-              <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                <button
-                  onClick={handleDownload}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#28a745',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    marginRight: '10px'
-                  }}
-                >
+              <div className="action-buttons">
+                <button className="download-btn" onClick={handleDownload}>
                   Download Result
                 </button>
-                <button
+                <button 
+                  className="reset-btn"
                   onClick={() => {
                     setImageData({ original: null, mask: null, preview: null });
                     setOriginalImageUrl(null);
                     setResultImageUrl(null);
-                  }}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#6c757d',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
                   }}
                 >
                   Start Over
@@ -129,12 +111,14 @@ const ImageEditor: React.FC = () => {
       </div>
       
       {imageData.original && (
-        <TextControls
-          textConfig={textConfig}
-          onChange={setTextConfig}
-          onGenerate={handleGenerateImage}
-          isLoading={isLoading}
-        />
+        <div className="controls-panel">
+          <TextControls
+            textConfig={textConfig}
+            onChange={setTextConfig}
+            onGenerate={handleGenerateImage}
+            isLoading={isLoading}
+          />
+        </div>
       )}
     </div>
   );

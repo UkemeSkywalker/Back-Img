@@ -62,16 +62,8 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({
   }, [originalImage, maskImage, resultImage]);
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <canvas
-        ref={canvasRef}
-        style={{
-          maxWidth: '100%',
-          maxHeight: '500px',
-          border: '1px solid #ddd',
-          borderRadius: '8px'
-        }}
-      />
+    <div className="canvas-container">
+      <canvas ref={canvasRef} />
     </div>
   );
 };
