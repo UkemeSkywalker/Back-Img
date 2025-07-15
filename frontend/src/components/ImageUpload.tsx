@@ -30,14 +30,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect, isLoading }) =
       className="upload-area"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
-      style={{
-        border: '2px dashed #ccc',
-        borderRadius: '8px',
-        padding: '40px',
-        textAlign: 'center',
-        cursor: 'pointer',
-        backgroundColor: isLoading ? '#f5f5f5' : 'white'
-      }}
     >
       <input
         type="file"
@@ -49,14 +41,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect, isLoading }) =
       />
       <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
         {isLoading ? (
-          <p>Processing...</p>
+          <div>
+            <h3>Processing...</h3>
+            <p>Generating mask with AI segmentation</p>
+          </div>
         ) : (
-          <>
-            <p>Drop an image here or click to select</p>
-            <p style={{ fontSize: '14px', color: '#666' }}>
-              Supports JPEG and PNG files
+          <div>
+            <h3>Drop an image here or click to select</h3>
+            <p style={{ fontSize: '16px', color: '#666', marginTop: '10px' }}>
+              Supports JPEG and PNG files up to 10MB
             </p>
-          </>
+          </div>
         )}
       </label>
     </div>
