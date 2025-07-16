@@ -88,6 +88,8 @@ const ImageEditor: React.FC = () => {
               originalImage={originalImageUrl}
               maskImage={imageData.mask}
               resultImage={resultImageUrl}
+              textConfig={textConfig}
+              onTextMove={(x, y) => setTextConfig(prev => ({ ...prev, x, y }))}
             />
             {resultImageUrl && (
               <div className="action-buttons">

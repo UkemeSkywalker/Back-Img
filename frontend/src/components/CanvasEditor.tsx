@@ -1,69 +1,116 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Stage, Layer, Image as KonvaImage, Text as KonvaText } from 'react-konva';
+import { TextConfig } from '../types';
+import Konva from 'konva';
 
 interface CanvasEditorProps {
   originalImage: string | null;
   maskImage: string | null;
   resultImage: string | null;
+  textConfig: TextConfig;
+  onTextMove: (x: number, y: number) => void;
 }
 
 const CanvasEditor: React.FC<CanvasEditorProps> = ({ 
   originalImage, 
   maskImage, 
-  resultImage 
+  resultImage,
+  textConfig,
+  onTextMove
 }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const [maskImg, setMaskImg] = useState<HTMLImageElement | null>(null);
+  const [resultImg, setResultImg] = useState<HTMLImageElement | null>(null);
+  const [stageSize, setStageSize] = useState({ width: 600, height: 400 });
+  const [scale, setScale] = useState(1);
+
+  const calculateSize = (imgWidth: number, imgHeight: number) => {
+    const maxWidth = 600;
+    const maxHeight = 400;
+    const scaleX = maxWidth / imgWidth;
+    const scaleY = maxHeight / imgHeight;
+    const newScale = Math.min(scaleX, scaleY, 1);
+    
+    return {
+      width: imgWidth * newScale,
+      height: imgHeight * newScale,
+      scale: newScale
+    };
+  };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     if (resultImage) {
-      // Show final result
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+        setResultImg(img);
+        const size = calculateSize(img.width, img.height);
+        setStageSize({ width: size.width, height: size.height });
+        setScale(size.scale);
       };
       img.src = resultImage;
-    } else if (originalImage && maskImage) {
-      // Show original with mask overlay
-      const original = new Image();
-      original.onload = () => {
-        canvas.width = original.width;
-        canvas.height = original.height;
-        ctx.drawImage(original, 0, 0);
-
-        const mask = new Image();
-        mask.onload = () => {
-          ctx.globalAlpha = 0.5;
-          ctx.drawImage(mask, 0, 0);
-          ctx.globalAlpha = 1.0;
-        };
-        mask.src = maskImage;
-      };
-      original.src = originalImage;
     } else if (originalImage) {
-      // Show original only
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+        setImage(img);
+        const size = calculateSize(img.width, img.height);
+        setStageSize({ width: size.width, height: size.height });
+        setScale(size.scale);
       };
       img.src = originalImage;
     }
-  }, [originalImage, maskImage, resultImage]);
+  }, [originalImage, resultImage]);
+
+  useEffect(() => {
+    if (maskImage) {
+      const img = new window.Image();
+      img.onload = () => {
+        setMaskImg(img);
+      };
+      img.src = maskImage;
+    }
+  }, [maskImage]);
+
+  const handleTextDragEnd = (e: Konva.KonvaEventObject<DragEvent>) => {
+    const node = e.target;
+    onTextMove(node.x() / scale, node.y() / scale);
+  };
 
   return (
     <div className="canvas-container">
-      <canvas ref={canvasRef} />
+      <Stage width={stageSize.width} height={stageSize.height}>
+        <Layer>
+          {/* Background image */}
+          {resultImg ? (
+            <KonvaImage image={resultImg} scaleX={scale} scaleY={scale} />
+          ) : image ? (
+            <KonvaImage image={image} scaleX={scale} scaleY={scale} />
+          ) : null}
+          
+          {/* Mask overlay */}
+          {maskImg && !resultImg && (
+            <KonvaImage 
+              image={maskImg} 
+              opacity={0.3}
+              scaleX={scale} 
+              scaleY={scale}
+            />
+          )}
+          
+          {/* Draggable text */}
+          {!resultImg && (
+            <KonvaText
+              text={textConfig.text}
+              x={textConfig.x * scale}
+              y={textConfig.y * scale}
+              fontSize={textConfig.fontSize * scale}
+              fill={textConfig.color}
+              fontFamily="Arial"
+              draggable={true}
+              onDragEnd={handleTextDragEnd}
+            />
+          )}
+        </Layer>
+      </Stage>
     </div>
   );
 };
