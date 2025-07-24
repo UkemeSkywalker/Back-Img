@@ -2,8 +2,25 @@ import React, { useState, useCallback } from 'react';
 import ImageUploadArea from './ImageUpload';
 import TextControls from './TextControls';
 import CanvasEditor from './CanvasEditor';
-import { generateMask, compositeImage } from '../services/api';
-import { TextConfig, ImageData } from '../types';
+import TextElementManager from './TextElementManager';
+import { TextConfig, ImageData, TextElement, TextStyle } from '../types';
+
+// Default text style for new text elements
+const defaultTextStyle: TextStyle = {
+  fontFamily: 'Arial',
+  fontSize: 48,
+  fontWeight: 400,
+  fontStyle: 'normal',
+  color: '#FFFFFF',
+  opacity: 100,
+  widthStretch: 100,
+  heightStretch: 100
+};
+
+// Text element ID generation system
+const generateTextElementId = (): string => {
+  return `text-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+};
 
 const ImageEditor: React.FC = () => {
   const [imageData, setImageData] = useState<ImageData>({
@@ -13,6 +30,11 @@ const ImageEditor: React.FC = () => {
     dimensions: null
   });
   
+  // Updated state management for multiple text elements
+  const [textElements, setTextElements] = useState<TextElement[]>([]);
+  const [activeTextId, setActiveTextId] = useState<string | null>(null);
+  
+  // Legacy textConfig for backward compatibility (will be removed later)
   const [textConfig, setTextConfig] = useState<TextConfig>({
     text: 'Sample Text',
     fontSize: 48,
@@ -24,6 +46,51 @@ const ImageEditor: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
+
+  // Text element CRUD operations
+  const addTextElement = useCallback(() => {
+    const newTextElement: TextElement = {
+      id: generateTextElementId(),
+      content: 'New Text',
+      layer: 'ontop',
+      style: { ...defaultTextStyle },
+      position: {
+        x: 50, // Center horizontally
+        y: 50, // Center vertically
+        rotation: 0
+      }
+    };
+    
+    setTextElements(prev => [...prev, newTextElement]);
+    setActiveTextId(newTextElement.id);
+  }, []);
+
+  const removeTextElement = useCallback((id: string) => {
+    setTextElements(prev => prev.filter(element => element.id !== id));
+    
+    // If the removed element was active, clear active selection or select another
+    if (activeTextId === id) {
+      const remainingElements = textElements.filter(element => element.id !== id);
+      setActiveTextId(remainingElements.length > 0 ? remainingElements[0].id : null);
+    }
+  }, [activeTextId, textElements]);
+
+  const updateTextElement = useCallback((id: string, updates: Partial<TextElement>) => {
+    setTextElements(prev => 
+      prev.map(element => 
+        element.id === id 
+          ? { ...element, ...updates }
+          : element
+      )
+    );
+  }, []);
+
+  const selectTextElement = useCallback((id: string) => {
+    setActiveTextId(id);
+  }, []);
+
+  // Get the currently active text element (for future use)
+  // const activeTextElement = textElements.find(element => element.id === activeTextId) || null;
 
   const handleImageSelect = useCallback(async (file: File) => {
     setIsLoading(true);
@@ -77,7 +144,7 @@ const ImageEditor: React.FC = () => {
 
   return (
     <div className="editor-grid">
-      <div>
+      <div className="canvas-section">
         {!imageData.original ? (
           <ImageUploadArea onImageSelect={handleImageSelect} isLoading={isLoading} />
         ) : (
@@ -86,6 +153,19 @@ const ImageEditor: React.FC = () => {
               originalImage={originalImageUrl}
               maskImage={imageData.mask}
               resultImage={resultImageUrl}
+              // TODO: Add these props when CanvasEditor is updated in future tasks
+              // textElements={textElements}
+              // activeTextId={activeTextId}
+              // onTextPositionChange={(id: string, x: number, y: number) => {
+              //   updateTextElement(id, {
+              //     position: {
+              //       ...textElements.find(el => el.id === id)?.position || { x: 0, y: 0, rotation: 0 },
+              //       x,
+              //       y
+              //     }
+              //   });
+              // }}
+              // onTextSelect={selectTextElement}
             />
             {resultImageUrl && (
               <div className="action-buttons">
@@ -98,6 +178,8 @@ const ImageEditor: React.FC = () => {
                     setImageData({ original: null, processed: null, mask: null, dimensions: null });
                     setOriginalImageUrl(null);
                     setResultImageUrl(null);
+                    setTextElements([]);
+                    setActiveTextId(null);
                   }}
                 >
                   Start Over
@@ -108,16 +190,23 @@ const ImageEditor: React.FC = () => {
         )}
       </div>
       
-      {imageData.original && (
-        <div className="controls-panel">
-          <TextControls
-            textConfig={textConfig}
-            onChange={setTextConfig}
-            onGenerate={handleGenerateImage}
-            isLoading={isLoading}
-          />
-        </div>
-      )}
+      <div className="controls-panel">
+        <TextElementManager
+          textElements={textElements}
+          activeTextId={activeTextId}
+          onTextAdd={addTextElement}
+          onTextRemove={removeTextElement}
+          onTextSelect={selectTextElement}
+        />
+        
+        <TextControls
+          textElements={textElements}
+          activeTextId={activeTextId}
+          onTextUpdate={updateTextElement}
+          isLoading={isLoading}
+          hasImage={!!imageData.original}
+        />
+      </div>
     </div>
   );
 };

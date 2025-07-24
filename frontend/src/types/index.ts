@@ -9,6 +9,8 @@ export interface Position {
 export interface TextStyle {
   fontFamily: string;          // Font family
   fontSize: number;            // Font size in pixels
+  fontWeight: number;          // Font weight (100-900)
+  fontStyle: 'normal' | 'italic'; // Font style
   color: string;               // Hex color code
   opacity: number;             // 0-100 percentage
   widthStretch: number;        // Width scaling factor
