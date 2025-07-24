@@ -1493,119 +1493,45 @@ TextControls Component Styles */
 }
 
 /* Layer Toggle Buttons */
-.layer-toggle-buttons {
+.layer-controls-container .layer-toggle {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xs);
+  border: 1px solid var(--border-secondary);
+  overflow: hidden;
   margin-bottom: var(--space-lg);
 }
 
-.layer-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-lg);
-  background: var(--bg-secondary);
-  border: 2px solid var(--border-secondary);
-  border-radius: var(--radius-lg);
-  color: var(--text-secondary);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--transition-bounce);
-  position: relative;
-  overflow: hidden;
-}
-
-.layer-button::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--accent-blue);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.layer-button:hover:not(:disabled) {
-  background: var(--bg-hover);
-  border-color: var(--border-primary);
-  color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--shadow-medium);
-}
-
-.layer-button:hover:not(:disabled)::before {
-  opacity: 0.5;
-}
-
-.layer-button.active {
-  background: rgba(74, 158, 255, 0.1);
-  border-color: var(--accent-blue);
-  color: var(--accent-blue);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(74, 158, 255, 0.2);
-}
-
-.layer-button.active::before {
-  opacity: 1;
-}
-
-.layer-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-.layer-icon {
-  font-size: var(--font-size-xl);
-  margin-right: var(--space-md);
-  transition: transform var(--transition-normal);
-}
-
-.layer-button:hover:not(:disabled) .layer-icon {
-  transform: scale(1.1);
-}
-
-.layer-button.active .layer-icon {
-  transform: scale(1.1);
-}
-
-.layer-text {
+.layer-controls-container .layer-toggle button {
   flex: 1;
-  text-align: left;
+  padding: var(--space-md);
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-normal);
+  cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.active-indicator {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--accent-blue);
-  background: rgba(74, 158, 255, 0.2);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: checkmark-bounce 0.3s ease-out;
+.layer-controls-container .layer-toggle button:hover:not(.active):not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
-@keyframes checkmark-bounce {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
+.layer-controls-container .layer-toggle button.active {
+  background: var(--accent-blue);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+}
+
+.layer-controls-container .layer-toggle button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* Layer Status Section */
@@ -1684,20 +1610,8 @@ TextControls Component Styles */
 
 /* Responsive Design for LayerControls */
 @media (max-width: 768px) {
-  .layer-toggle-buttons {
-    gap: var(--space-sm);
-  }
-  
-  .layer-button {
-    padding: var(--space-md);
-  }
-  
-  .layer-icon {
-    font-size: var(--font-size-lg);
-    margin-right: var(--space-sm);
-  }
-  
-  .layer-text {
-    font-size: var(--font-size-sm);
+  .layer-controls-container .layer-toggle button {
+    padding: var(--space-sm);
+    font-size: var(--font-size-xs);
   }
 }

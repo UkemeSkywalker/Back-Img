@@ -41,33 +41,25 @@ const LayerControls: React.FC<LayerControlsProps> = ({
       <h4 className="section-title">Layer</h4>
       
       {/* Layer Toggle Buttons */}
-      <div className="layer-toggle-buttons">
+      <div className="layer-toggle">
         <button
           type="button"
-          className={`layer-button ${activeTextElement.layer === 'behind' ? 'active' : ''}`}
+          className={activeTextElement.layer === 'behind' ? 'active' : ''}
           onClick={() => handleLayerChange('behind')}
           disabled={isLoading}
           title="Place text behind the main subject in the image"
         >
-          <span className="layer-icon">🔙</span>
-          <span className="layer-text">Behind Image</span>
-          {activeTextElement.layer === 'behind' && (
-            <span className="active-indicator">✓</span>
-          )}
+          Behind Image
         </button>
         
         <button
           type="button"
-          className={`layer-button ${activeTextElement.layer === 'ontop' ? 'active' : ''}`}
+          className={activeTextElement.layer === 'ontop' ? 'active' : ''}
           onClick={() => handleLayerChange('ontop')}
           disabled={isLoading}
           title="Place text on top of the image as an overlay"
         >
-          <span className="layer-icon">🔝</span>
-          <span className="layer-text">On Top of Image</span>
-          {activeTextElement.layer === 'ontop' && (
-            <span className="active-indicator">✓</span>
-          )}
+          On Top of Image
         </button>
       </div>
       

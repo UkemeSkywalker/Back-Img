@@ -195,7 +195,7 @@ describe('LayerControls Component', () => {
     expect(mockOnTextUpdate).not.toHaveBeenCalled();
   });
 
-  it('shows visual indication of active layer with checkmark', () => {
+  it('shows visual indication of active layer with active class', () => {
     render(
       <LayerControls
         textElements={mockTextElements}
@@ -205,7 +205,7 @@ describe('LayerControls Component', () => {
     );
     
     const onTopButton = screen.getByRole('button', { name: /on top of image/i });
-    expect(onTopButton).toHaveTextContent('✓');
+    expect(onTopButton).toHaveClass('active');
   });
 
   it('handles empty text elements array', () => {
