@@ -4,6 +4,7 @@ import TextControls from './TextControls';
 import CanvasEditor from './CanvasEditor';
 import TextElementManager from './TextElementManager';
 import LayerControls from './LayerControls';
+import PositionControls from './PositionControls';
 import { TextConfig, ImageData, TextElement, TextStyle } from '../types';
 
 // Default text style for new text elements
@@ -144,7 +145,7 @@ const ImageEditor: React.FC = () => {
   }, [resultImageUrl]);
 
   return (
-    <div className="editor-grid">
+    <div className="editor-grid-three-column">
       <div className="canvas-section">
         {!imageData.original ? (
           <ImageUploadArea onImageSelect={handleImageSelect} isLoading={isLoading} />
@@ -191,7 +192,7 @@ const ImageEditor: React.FC = () => {
         )}
       </div>
       
-      <div className="controls-panel">
+      <div className="text-controls-panel">
         <TextElementManager
           textElements={textElements}
           activeTextId={activeTextId}
@@ -200,6 +201,16 @@ const ImageEditor: React.FC = () => {
           onTextSelect={selectTextElement}
         />
         
+        <TextControls
+          textElements={textElements}
+          activeTextId={activeTextId}
+          onTextUpdate={updateTextElement}
+          isLoading={isLoading}
+          hasImage={!!imageData.original}
+        />
+      </div>
+      
+      <div className="layout-controls-panel">
         <LayerControls
           textElements={textElements}
           activeTextId={activeTextId}
@@ -207,12 +218,11 @@ const ImageEditor: React.FC = () => {
           isLoading={isLoading}
         />
         
-        <TextControls
+        <PositionControls
           textElements={textElements}
           activeTextId={activeTextId}
           onTextUpdate={updateTextElement}
           isLoading={isLoading}
-          hasImage={!!imageData.original}
         />
       </div>
     </div>

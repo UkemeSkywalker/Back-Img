@@ -203,6 +203,18 @@ body {
   border: 1px solid var(--border-secondary);
 }
 
+.editor-grid-three-column {
+  display: grid;
+  grid-template-columns: 1fr 350px 300px;
+  gap: var(--space-xl);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-3xl);
+  padding: var(--space-2xl);
+  border: 1px solid var(--border-secondary);
+  max-width: 1400px;
+  width: 100%;
+}
+
 .canvas-section {
   min-height: 450px;
   display: flex;
