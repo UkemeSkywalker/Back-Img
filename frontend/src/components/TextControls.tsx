@@ -448,28 +448,7 @@ const TextControls: React.FC<TextControlsProps> = ({
         </div>
       </div>
 
-      {/* Layer Controls */}
-      <div className="layer-controls">
-        <h4 className="section-title">Layer</h4>
-        <div className="layer-toggle">
-          <button
-            type="button"
-            className={activeTextElement.layer === 'behind' ? 'active' : ''}
-            onClick={() => onTextUpdate(activeTextElement.id, { layer: 'behind' })}
-            disabled={isLoading}
-          >
-            Behind Image
-          </button>
-          <button
-            type="button"
-            className={activeTextElement.layer === 'ontop' ? 'active' : ''}
-            onClick={() => onTextUpdate(activeTextElement.id, { layer: 'ontop' })}
-            disabled={isLoading}
-          >
-            On Top of Image
-          </button>
-        </div>
-      </div>
+
 
       {!hasImage && (
         <div className="upload-hint">

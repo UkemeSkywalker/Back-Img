@@ -3,6 +3,7 @@ import ImageUploadArea from './ImageUpload';
 import TextControls from './TextControls';
 import CanvasEditor from './CanvasEditor';
 import TextElementManager from './TextElementManager';
+import LayerControls from './LayerControls';
 import { TextConfig, ImageData, TextElement, TextStyle } from '../types';
 
 // Default text style for new text elements
@@ -197,6 +198,13 @@ const ImageEditor: React.FC = () => {
           onTextAdd={addTextElement}
           onTextRemove={removeTextElement}
           onTextSelect={selectTextElement}
+        />
+        
+        <LayerControls
+          textElements={textElements}
+          activeTextId={activeTextId}
+          onTextUpdate={updateTextElement}
+          isLoading={isLoading}
         />
         
         <TextControls
