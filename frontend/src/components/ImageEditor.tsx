@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import ImageUpload from './ImageUpload';
+import ImageUploadArea from './ImageUpload';
 import TextControls from './TextControls';
 import CanvasEditor from './CanvasEditor';
 import { generateMask, compositeImage } from '../services/api';
@@ -8,8 +8,9 @@ import { TextConfig, ImageData } from '../types';
 const ImageEditor: React.FC = () => {
   const [imageData, setImageData] = useState<ImageData>({
     original: null,
+    processed: null,
     mask: null,
-    preview: null
+    dimensions: null
   });
   
   const [textConfig, setTextConfig] = useState<TextConfig>({
@@ -31,14 +32,12 @@ const ImageEditor: React.FC = () => {
       const imageUrl = URL.createObjectURL(file);
       setOriginalImageUrl(imageUrl);
       
-      // Generate mask
-      const maskBlob = await generateMask(file);
-      const maskUrl = URL.createObjectURL(maskBlob);
-      
+      // Skip AI mask generation for now - just use the original image
       setImageData({
         original: file,
-        mask: maskUrl,
-        preview: imageUrl
+        processed: imageUrl,
+        mask: null, // No mask for now
+        dimensions: null
       });
     } catch (error) {
       console.error('Error processing image:', error);
@@ -49,16 +48,15 @@ const ImageEditor: React.FC = () => {
   }, []);
 
   const handleGenerateImage = useCallback(async () => {
-    if (!imageData.original || !imageData.mask) return;
+    if (!imageData.original) return;
     
     setIsLoading(true);
     try {
-      const maskResponse = await fetch(imageData.mask);
-      const maskBlob = await maskResponse.blob();
+      // For now, just simulate processing and use the original image as result
+      // This will be replaced with actual AI processing later
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate processing time
       
-      const resultBlob = await compositeImage(imageData.original, maskBlob, textConfig);
-      const resultUrl = URL.createObjectURL(resultBlob);
-      
+      const resultUrl = originalImageUrl; // Use original image as placeholder result
       setResultImageUrl(resultUrl);
     } catch (error) {
       console.error('Error generating image:', error);
@@ -66,7 +64,7 @@ const ImageEditor: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [imageData, textConfig]);
+  }, [imageData, originalImageUrl]);
 
   const handleDownload = useCallback(() => {
     if (!resultImageUrl) return;
@@ -81,7 +79,7 @@ const ImageEditor: React.FC = () => {
     <div className="editor-grid">
       <div>
         {!imageData.original ? (
-          <ImageUpload onImageSelect={handleImageSelect} isLoading={isLoading} />
+          <ImageUploadArea onImageSelect={handleImageSelect} isLoading={isLoading} />
         ) : (
           <div>
             <CanvasEditor
@@ -97,7 +95,7 @@ const ImageEditor: React.FC = () => {
                 <button 
                   className="reset-btn"
                   onClick={() => {
-                    setImageData({ original: null, mask: null, preview: null });
+                    setImageData({ original: null, processed: null, mask: null, dimensions: null });
                     setOriginalImageUrl(null);
                     setResultImageUrl(null);
                   }}

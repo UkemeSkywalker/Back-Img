@@ -5,11 +5,7 @@ import ImageEditor from './components/ImageEditor';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Behind-Image Text Generator</h1>
-        <p>Add text behind objects in your images</p>
-      </header>
-      <main>
+      <main className="main-container">
         <ImageEditor />
       </main>
     </div>
