@@ -153,23 +153,33 @@ describe("ImageEditor Integration", () => {
   test("shows integrated layout with upload and controls", () => {
     render(<ImageEditor />);
 
-    // Should show both sections in the grid layout
+    // Should show all sections in the three-column grid layout
     const canvasSection = document.querySelector(".canvas-section");
-    const controlsPanel = document.querySelector(".controls-panel");
+    const textControlsPanel = document.querySelector(".text-controls-panel");
+    const layoutControlsPanel = document.querySelector(".layout-controls-panel");
 
     expect(canvasSection).toBeInTheDocument();
-    expect(controlsPanel).toBeInTheDocument();
+    expect(textControlsPanel).toBeInTheDocument();
+    expect(layoutControlsPanel).toBeInTheDocument();
 
     // Upload area should be in canvas section
     const uploadArea = canvasSection?.querySelector(".image-upload-area");
     expect(uploadArea).toBeInTheDocument();
 
-    // Text element manager should be in controls panel
-    const textElementManager = controlsPanel?.querySelector(".text-element-manager");
+    // Text element manager should be in text controls panel
+    const textElementManager = textControlsPanel?.querySelector(".text-element-manager");
     expect(textElementManager).toBeInTheDocument();
     
-    // Text controls should be in controls panel
-    const textControls = controlsPanel?.querySelector(".text-controls-container");
+    // Text controls should be in text controls panel
+    const textControls = textControlsPanel?.querySelector(".text-controls-container");
     expect(textControls).toBeInTheDocument();
+    
+    // Layer controls should be in layout controls panel
+    const layerControls = layoutControlsPanel?.querySelector(".layer-controls-container");
+    expect(layerControls).toBeInTheDocument();
+    
+    // Position controls should be in layout controls panel
+    const positionControls = layoutControlsPanel?.querySelector(".position-controls-container");
+    expect(positionControls).toBeInTheDocument();
   });
 });

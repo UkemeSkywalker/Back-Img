@@ -140,7 +140,7 @@ const PositionControls: React.FC<PositionControlsProps> = ({
             disabled={isLoading}
             title="Reset position to center"
           >
-            Reset to Center
+            ↻ Reset
           </button>
         </div>
       </div>

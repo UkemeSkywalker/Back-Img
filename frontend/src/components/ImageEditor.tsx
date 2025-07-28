@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import ImageUploadArea from './ImageUpload';
 import TextControls from './TextControls';
-import CanvasEditor from './CanvasEditor';
+import ImageCanvas from './CanvasEditor';
 import TextElementManager from './TextElementManager';
 import LayerControls from './LayerControls';
 import PositionControls from './PositionControls';
@@ -151,23 +151,22 @@ const ImageEditor: React.FC = () => {
           <ImageUploadArea onImageSelect={handleImageSelect} isLoading={isLoading} />
         ) : (
           <div>
-            <CanvasEditor
+            <ImageCanvas
               originalImage={originalImageUrl}
               maskImage={imageData.mask}
               resultImage={resultImageUrl}
-              // TODO: Add these props when CanvasEditor is updated in future tasks
-              // textElements={textElements}
-              // activeTextId={activeTextId}
-              // onTextPositionChange={(id: string, x: number, y: number) => {
-              //   updateTextElement(id, {
-              //     position: {
-              //       ...textElements.find(el => el.id === id)?.position || { x: 0, y: 0, rotation: 0 },
-              //       x,
-              //       y
-              //     }
-              //   });
-              // }}
-              // onTextSelect={selectTextElement}
+              textElements={textElements}
+              activeTextId={activeTextId}
+              onTextPositionChange={(id: string, x: number, y: number) => {
+                updateTextElement(id, {
+                  position: {
+                    ...textElements.find(el => el.id === id)?.position || { x: 0, y: 0, rotation: 0 },
+                    x,
+                    y
+                  }
+                });
+              }}
+              onTextSelect={selectTextElement}
             />
             {resultImageUrl && (
               <div className="action-buttons">

@@ -122,7 +122,7 @@ describe('PositionControls', () => {
       />
     );
 
-    const resetButton = screen.getByText('Reset to Center');
+    const resetButton = screen.getByText('↻ Reset');
     fireEvent.click(resetButton);
 
     expect(mockOnTextUpdate).toHaveBeenCalledWith('test-1', {
@@ -143,7 +143,7 @@ describe('PositionControls', () => {
     const horizontalSlider = screen.getByLabelText('Horizontal: 50%');
     const verticalSlider = screen.getByLabelText('Vertical: 30%');
     const rotationSlider = screen.getByLabelText('Rotation: 45°');
-    const resetButton = screen.getByText('Reset to Center');
+    const resetButton = screen.getByText('↻ Reset');
 
     expect(horizontalSlider).toBeDisabled();
     expect(verticalSlider).toBeDisabled();

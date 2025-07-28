@@ -95,8 +95,8 @@
   - Add real-time position preview
   - _Requirements: 3.8_
 
-- [ ] 9. Enhanced ImageCanvas component with multi-text support
-- [ ] 9.1 Update canvas rendering for multiple text elements
+- [x] 9. Enhanced ImageCanvas component with multi-text support
+- [x] 9.1 Update canvas rendering for multiple text elements
 
   - Modify canvas drawing logic to handle TextElement array
   - Implement layer-aware text rendering
@@ -104,7 +104,7 @@
   - Create hover states for text elements
   - _Requirements: 4.1, 4.2, 4.3, 5.1, 5.4_
 
-- [ ] 9.2 Implement drag-to-position functionality
+- [x] 9.2 Implement drag-to-position functionality
 
   - Update ImageCanvas component for interactive text positioning
   - Add mouse/touch event handlers for text dragging
@@ -112,7 +112,7 @@
   - Implement position constraints and bounds checking
   - _Requirements: 3.9_
 
-- [ ] 9.3 Add interactive text manipulation
+- [x] 9.3 Add interactive text manipulation
 
   - Implement click-to-select text functionality
   - Add drag handles for selected text elements
